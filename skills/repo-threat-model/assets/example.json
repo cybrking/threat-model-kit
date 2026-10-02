@@ -1,0 +1,231 @@
+{
+  "schema_version": "0.2",
+  "model_id": "fictional-document-agent",
+  "scope": {
+    "purpose": "Fictional example: agent reads external documents and can export tenant records. No system was inspected.",
+    "snapshot": "fictional-design-v1",
+    "environment": "fictional sandbox",
+    "owner": "Example product owner",
+    "in_scope": [
+      "Document ingestion and export authorization"
+    ],
+    "exclusions": [
+      {
+        "area": "Training pipeline",
+        "reason": "Not present in this fictional system"
+      }
+    ],
+    "profiles": [
+      "ai",
+      "privacy"
+    ],
+    "risk_policy": "Draft rubric; examples are not an approved release policy.",
+    "repositories": [
+      {
+        "location": "fictional://document-agent",
+        "revision": "fictional-design-v1",
+        "role": "Fictional application repository; no repository was inspected."
+      }
+    ],
+    "sources": []
+  },
+  "assets": [
+    {
+      "id": "A1",
+      "description": "Tenant records",
+      "owner": "Example data owner",
+      "harm": "Cross-tenant disclosure"
+    }
+  ],
+  "actors": [
+    {
+      "id": "ACT1",
+      "description": "External document author",
+      "capabilities": [
+        "Can place instructions in a document ingested by the agent"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "id": "C1",
+      "description": "External document source",
+      "evidence_ids": [
+        "E1"
+      ]
+    },
+    {
+      "id": "C2",
+      "description": "Agent and export tool",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "B1",
+      "description": "Untrusted document content enters a process with export capability"
+    }
+  ],
+  "flows": [
+    {
+      "id": "F1",
+      "from_component_id": "C1",
+      "to_component_id": "C2",
+      "boundary_ids": [
+        "B1"
+      ],
+      "data": "Document text",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "invariants": [
+    {
+      "id": "I1",
+      "statement": "Export authorization must use the authenticated tenant and cannot be overridden by document text.",
+      "asset_ids": [
+        "A1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "kind": "design",
+      "locator": "example.json#/scope/purpose",
+      "snapshot": "fictional-design-v1",
+      "observation": "This is a fictional design premise, not code or runtime evidence."
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "AS1",
+      "statement": "Export tool may trust a model-selected tenant identifier.",
+      "owner": "Example security reviewer",
+      "verification_plan": "Inspect the server-side authorization and run a sandbox cross-tenant test."
+    }
+  ],
+  "threats": [
+    {
+      "id": "T1",
+      "title": "Document prompt injection causes cross-tenant export",
+      "status": "hypothesis",
+      "actor_id": "ACT1",
+      "entry_component_id": "C2",
+      "asset_ids": [
+        "A1"
+      ],
+      "boundary_ids": [
+        "B1"
+      ],
+      "invariant_id": "I1",
+      "prerequisites": [
+        "Agent treats malicious document text as an instruction",
+        "Export endpoint permits the resulting tenant selection"
+      ],
+      "attack_steps": [
+        "Author places export instructions in a document",
+        "Agent attempts export for another tenant",
+        "Endpoint returns records without enforcing authenticated tenant scope"
+      ],
+      "harm": "Disclosure of another tenant's records",
+      "tags": [
+        "STRIDE:information-disclosure",
+        "AI:prompt-injection"
+      ],
+      "evidence_ids": [
+        "E1"
+      ],
+      "assumption_ids": [
+        "AS1"
+      ],
+      "risk": {
+        "impact": "high",
+        "feasibility": "unknown",
+        "confidence": "low",
+        "priority": "high",
+        "rationale": "Sensitive cross-tenant harm warrants investigation; endpoint behavior has not been observed.",
+        "residual_risk": "Unknown until authorization is inspected and tested."
+      },
+      "response": "investigate",
+      "control_ids": [
+        "CTRL1"
+      ],
+      "owner": "Example export service owner",
+      "next_action": "Inspect authorization and execute the scoped sandbox test.",
+      "due_date": "2026-10-15"
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTRL1",
+      "requirement": "Bind exports to authenticated tenant server-side, independent of model output.",
+      "status": "proposed",
+      "evidence_ids": [],
+      "check_ids": [
+        "CHK1"
+      ],
+      "owner": "Example export service owner"
+    }
+  ],
+  "checks": [
+    {
+      "id": "CHK1",
+      "control_id": "CTRL1",
+      "procedure": "In an authorized sandbox, attempt an export for another tenant through injected document instructions.",
+      "expected": "Cross-tenant request is denied; no foreign records are returned.",
+      "outcome": "not_run",
+      "snapshot": "fictional-design-v1",
+      "evidence_ids": []
+    }
+  ],
+  "coverage": [
+    {
+      "id": "COV1",
+      "boundary_id": "B1",
+      "lens": "security",
+      "disposition": "reviewed",
+      "rationale": "Illustrative scenario only; independent evidence review remains required.",
+      "threat_ids": [
+        "T1"
+      ]
+    },
+    {
+      "id": "COV2",
+      "boundary_id": "B1",
+      "lens": "privacy",
+      "disposition": "deferred",
+      "rationale": "Example is intentionally incomplete; assess retention, business misuse, and deployment in a real model.",
+      "threat_ids": []
+    },
+    {
+      "id": "COV3",
+      "boundary_id": "B1",
+      "lens": "business_abuse",
+      "disposition": "deferred",
+      "rationale": "Example is intentionally incomplete; assess retention, business misuse, and deployment in a real model.",
+      "threat_ids": []
+    },
+    {
+      "id": "COV4",
+      "boundary_id": "B1",
+      "lens": "operations",
+      "disposition": "deferred",
+      "rationale": "Example is intentionally incomplete; assess retention, business misuse, and deployment in a real model.",
+      "threat_ids": []
+    },
+    {
+      "id": "COV5",
+      "boundary_id": "B1",
+      "lens": "ai",
+      "disposition": "reviewed",
+      "rationale": "Illustrative scenario only; independent evidence review remains required.",
+      "threat_ids": [
+        "T1"
+      ]
+    }
+  ]
+}

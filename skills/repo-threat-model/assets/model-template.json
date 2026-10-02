@@ -1,0 +1,28 @@
+{
+  "schema_version": "0.2",
+  "model_id": "",
+  "scope": {
+    "purpose": "",
+    "snapshot": "",
+    "environment": "",
+    "owner": "",
+    "in_scope": [],
+    "exclusions": [],
+    "profiles": [],
+    "risk_policy": "Not supplied; priorities are provisional, not release decisions.",
+    "repositories": [],
+    "sources": []
+  },
+  "assets": [],
+  "actors": [],
+  "components": [],
+  "boundaries": [],
+  "flows": [],
+  "invariants": [],
+  "evidence": [],
+  "assumptions": [],
+  "threats": [],
+  "controls": [],
+  "checks": [],
+  "coverage": []
+}
