@@ -1,6 +1,6 @@
 # Verification record
 
-Date: 2026-10-01. Candidate: skill 0.2.1 / schema 0.2. Local automated tests ran with Python 3.14.7. The prepared CI matrix targets Python 3.10 and 3.14; it has not run on GitHub.
+Date: 2026-10-01. Public alpha: skill 0.2.1 / schema 0.2. Local automated tests ran with Python 3.14.7. GitHub CI passed on Python 3.10 and 3.14 for the initial source commit `e9c02f3`.
 
 The package is experimental. Results distinguish validator mechanics from harness behavior and security effectiveness.
 
@@ -14,7 +14,7 @@ The package is experimental. Results distinguish validator mechanics from harnes
 | Codex non-code evaluation | Initial run failed boundary/threat consistency. Fresh unprimed skill 0.2.1 run with installed prerequisites corrected its own errors; both final models independently validated and all six artifacts passed bounded manual review, with deferred coverage/unexecuted checks disclosed. See [full record](non-code-evaluation.md). |
 | Claude Code behavioral evaluation | Not completed; prior attempt blocked by authentication |
 | AWS account observation | Not run |
-| GitHub CI | Prepared with immutable action commits and a license gate; not run on GitHub |
+| GitHub CI | Passed on Python 3.10 and 3.14, including 22 tests and the license/package/example gate. [Workflow run](https://github.com/cybrking/threat-model-kit/actions/runs/36959526490) |
 | Real-project pilots and threat-discovery performance | Not run |
 
 Version 0.2.1 tightens the validator to reject design-only implementation/execution claims and disjoint threat/invariant assets. Structure checks still cannot establish source authenticity, whether declared evidence is truthful, complete threat coverage, or path-specific control effectiveness. Human evidence and closure review remain required.

@@ -19,6 +19,6 @@ This experimental skill supports early ideas and feature/Jira text as well as de
 
 The framework combines established modeling techniques while preserving assumptions, source provenance, stable IDs, and evidence-backed state transitions. Its validator checks recorded structure and consistency; it cannot establish that evidence is genuine, threats are exhaustive, or controls are effective.
 
-The candidate includes 22 passing automated tests and a portable installation layout. Review the [verification record](verification.md) and [non-code evaluation](non-code-evaluation.md) for exact behavioral results and failures. Authenticated Claude Code testing, live Jira/AWS integration, and representative real-project pilots remain outstanding. GitHub CI is prepared but has not run.
+The candidate includes 22 passing automated tests and a portable installation layout. Review the [verification record](verification.md) and [non-code evaluation](non-code-evaluation.md) for exact behavioral results and failures. Authenticated Claude Code testing, live Jira/AWS integration, and representative real-project pilots remain outstanding. GitHub CI passed on Python 3.10 and 3.14; the exact run is linked in the verification record.
 
-Publish as an alpha after resolving the [release checklist](release-readiness.md). Do not add passing CI or fully verified harness badges until their checks actually run.
+This is an alpha released under the [release checklist](release-readiness.md). Do not add passing CI or fully verified harness badges until their checks actually run.

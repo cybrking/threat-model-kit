@@ -17,3 +17,14 @@ Before describing harness support as verified: run the latest packaged entrypoin
 Before production claims: run representative web/API, privacy-sensitive, and AI/tool-system pilots, measure actionable findings and false/missed findings, verify lifecycle updates and scoped AWS observation behavior, and demonstrate remediation outcomes. Alpha publication does not meet those production criteria.
 
 The [release notes](release-notes.md) supply the approved repository metadata and alpha announcement text.
+
+## Completed publication checks — 2026-10-01
+
+- User approved `cybrking/threat-model-kit`, Apache 2.0, and public alpha publication.
+- Isolated release tree and fictional examples reviewed; no unrelated workspace contents published.
+- All 22 local tests, skill-format validation, and the license/package/example checks passed.
+- Public repository created; Apache license detected by GitHub; private vulnerability reporting enabled and verified.
+- Source pushed to main; [GitHub validation](https://github.com/cybrking/threat-model-kit/actions/runs/36959526490) passed on Python 3.10 and 3.14.
+- Alpha tagging follows a passing validation result for the final release commit.
+
+The remaining harness, cloud, and production gates above are still outstanding; publication does not complete them.
