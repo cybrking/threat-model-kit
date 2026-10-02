@@ -4,6 +4,84 @@ A portable threat modeling skill designed for Claude Code and Codex that turns i
 
 **Experimental alpha · skill version 0.2.1 · schema 0.2.** The installed command remains `repo-threat-model`. This is a synthesis of established methods, not a validated industry standard. Harness and assessment evidence are documented in [verification](docs/verification.md).
 
+## Install for Claude Code or Codex
+
+These instructions add Threat Model Kit to an existing Claude Code or Codex setup. Choose your agent below, paste the installation prompt, then start a new session and try the example.
+
+### Claude Code
+
+**1. Paste this into Claude Code:**
+
+```text
+Install the repo-threat-model skill from https://github.com/cybrking/threat-model-kit/tree/v0.2.1-alpha.1/skills/repo-threat-model into ~/.claude/skills/repo-threat-model. Copy the complete skill folder, including its references, assets, scripts, and LICENSE. Preserve any existing installation and explain how to update it if one is already present.
+```
+
+**2. Start a new Claude Code session in the project you want to assess, then run:**
+
+```text
+/repo-threat-model Assess this repository and write the threat model, assessment, and engineering security controls to ./threat-model.
+```
+
+### Codex
+
+**1. Paste this into Codex:**
+
+```text
+$skill-installer Install https://github.com/cybrking/threat-model-kit/tree/v0.2.1-alpha.1/skills/repo-threat-model into ~/.agents/skills. Preserve any existing installation.
+```
+
+Codex's built-in Skill Installer downloads the complete skill folder. The installation prompt explicitly selects the user skill directory.
+
+**2. Start a new Codex session in the project you want to assess, then run:**
+
+```text
+Use $repo-threat-model to assess this repository and write the threat model, assessment, and engineering security controls to ./threat-model.
+```
+
+Both examples produce `security-controls.md`, `assessment.md`, and `model.json` in `./threat-model`. You can also supply an idea, feature, design, or Jira ticket text using the examples below.
+
+<details>
+<summary>Manual installation from a terminal (macOS/Linux)</summary>
+
+Download the alpha release:
+
+```sh
+git clone --branch v0.2.1-alpha.1 --depth 1 https://github.com/cybrking/threat-model-kit.git
+cd threat-model-kit
+```
+
+For **Claude Code**, copy the skill into your personal skills directory:
+
+```sh
+mkdir -p ~/.claude/skills
+if [ -e ~/.claude/skills/repo-threat-model ] || [ -L ~/.claude/skills/repo-threat-model ]; then
+  printf '%s\n' 'Already installed. Review your existing skill before updating.'
+else
+  cp -R skills/repo-threat-model ~/.claude/skills/
+  printf '%s\n' 'Installed. Start a new Claude Code session and use /repo-threat-model.'
+fi
+```
+
+For **Codex**, copy the skill into your user skills directory:
+
+```sh
+mkdir -p ~/.agents/skills
+if [ -e ~/.agents/skills/repo-threat-model ] || [ -L ~/.agents/skills/repo-threat-model ]; then
+  printf '%s\n' 'Already installed. Review your existing skill before updating.'
+else
+  cp -R skills/repo-threat-model ~/.agents/skills/
+  printf '%s\n' 'Installed. Start a new Codex session and use $repo-threat-model.'
+fi
+```
+
+</details>
+
+**Updating:** obtain the desired release and compare its skill folder with your installed copy before replacing or merging local changes. The installation prompts and manual commands preserve existing installations.
+
+**Validator prerequisites:** Python 3.10+ and `jsonschema` are needed for automated model validation. If `uv` is available, the [validation command](#validate-a-model) supplies the dependency automatically. If validation tools are unavailable, the skill reports that limitation in its assessment.
+
+Installation follows [Claude Code's personal skill layout](https://code.claude.com/docs/en/skills) and [Codex's skill installation guidance](https://learn.chatgpt.com/docs/build-skills). These steps install the skill instructions; authenticated Claude behavioral testing remains outstanding as described in the [verification record](docs/verification.md).
+
 ## What engineering receives
 
 The skill produces three linked artifacts:
@@ -27,33 +105,6 @@ An idea can be assessed before code exists. The skill records described capabili
 ## Inputs
 
 Supply any combination of a pasted idea, feature request, Jira ticket text or accessible ticket reference, design document, or repositories. Optional AWS read access can supply in-scope configuration observations. No Jira connector, AWS SDK, or cloud access is required for basic modeling. A ticket key alone requires a readable connector or supplied content; the skill cannot retrieve inaccessible context.
-
-## Install
-
-Clone the public repository, then run the installation commands from its root:
-
-```sh
-git clone https://github.com/cybrking/threat-model-kit.git
-cd threat-model-kit
-```
-
-Python 3.10+ and `jsonschema` are needed for the validator; the modeling instructions run through your authenticated agent harness.
-
-For Claude Code:
-
-```sh
-mkdir -p ~/.claude/skills
-test ! -e ~/.claude/skills/repo-threat-model && test ! -L ~/.claude/skills/repo-threat-model && cp -R skills/repo-threat-model ~/.claude/skills/
-```
-
-For Codex:
-
-```sh
-mkdir -p ~/.agents/skills
-test ! -e ~/.agents/skills/repo-threat-model && test ! -L ~/.agents/skills/repo-threat-model && cp -R skills/repo-threat-model ~/.agents/skills/
-```
-
-These commands leave an existing installation untouched. To upgrade, review local changes and replace or merge the skill deliberately. Restart the harness if the skill is not discovered. Installation paths follow [Claude Code skills](https://code.claude.com/docs/en/skills) and [Codex skills](https://learn.chatgpt.com/docs/build-skills). This is a skill folder, not a plugin package.
 
 ## Use
 
