@@ -4,6 +4,69 @@
 
 Default to suggestion-only. CTRL-I-01 and CTRL-I-03 are architecture gates if any account-changing capability is contemplated. CTRL-I-02, CTRL-I-04, and CTRL-I-05 are required before release consideration. Copyable tasks and negative cases are in [security-controls.md](security-controls.md). Every control is proposed and every check is `not_run`.
 
+## Scope and system description
+
+- Purpose: Pre-architecture threat model for an AI support assistant that summarizes enterprise documents and drafts or possibly executes account changes.
+- Source: `idea.md` (idea). The system model below is the intended design stated in that source, not observed implementation.
+- Profiles: privacy, ai.
+- In scope: Document upload and isolation; AI summarization and prompt-injection resistance; Recommended account changes; Conditional execution of changes; Sensitive-data handling and auditability.
+
+| Excluded area | Reason |
+|---|---|
+| Implementation and deployment verification | No repository, architecture, or deployment exists. |
+| Active AI or security testing | No target exists and testing was not authorized. |
+
+## System model
+
+Rendered from `model.json`.
+
+| Component | Description | Evidence |
+|---|---|---|
+| C-I-UPLOAD | Provisional document upload/intake and tenant-context surface | E-I-1 |
+| C-I-STORE | Assumed logical document/derived-data storage; technology and retention undecided | E-I-1 |
+| C-I-ASSIST | Provisional AI assistant/orchestration component for summarization and recommendations | E-I-1 |
+| C-I-CHANGE | Conditional account-change interface; may be suggestion-only or executable | E-I-1 |
+| C-I-UI | Provisional support review, approval, and audit surface | E-I-1 |
+
+| Boundary | Description |
+|---|---|
+| B-I-CONTENT | Trust boundary between untrusted uploaded content and assistant instructions/context |
+| B-I-TENANT | Enterprise tenant and support-operator authorization boundary around documents and accounts |
+| B-I-AUTHORITY | Privilege boundary between generated recommendation and any account-changing action |
+
+| Flow | From | To | Boundaries | Data |
+|---|---|---|---|---|
+| F-I-UPLOAD | C-I-UPLOAD | C-I-STORE | B-I-CONTENT, B-I-TENANT | Untrusted, potentially sensitive enterprise document and tenant metadata |
+| F-I-CONTEXT | C-I-STORE | C-I-ASSIST | B-I-CONTENT, B-I-TENANT | Document content and tenant-scoped context for summarization |
+| F-I-RECOMMEND | C-I-ASSIST | C-I-UI | B-I-AUTHORITY | Summary, recommended changes, provenance, and uncertainty |
+| F-I-EXECUTE | C-I-ASSIST | C-I-CHANGE | B-I-TENANT, B-I-AUTHORITY | Conditional account-change request and authorization context |
+
+| Asset | Description | Owner | Harm |
+|---|---|---|---|
+| A-I-DOCS | Sensitive enterprise customer documents and derived summaries | Customer data/privacy owner needed | Cross-tenant disclosure, confidentiality breach, unintended retention, or secondary use. |
+| A-I-ACCOUNTS | Enterprise account configuration, integrity, and privileged change capability | Account/platform owner needed | Unauthorized or harmful changes, outage, financial loss, or loss of trust. |
+| A-I-DECISIONS | Integrity and provenance of summaries, recommendations, approvals, and audit records | Support/product owner needed | Misleading support action, repudiation, unsafe automation, or inability to investigate. |
+
+| Actor | Description | Capabilities |
+|---|---|---|
+| ACT-I-SUPPORT | Authorized support operator using the assistant | Submit or select customer documents; Review summaries and recommended changes; Potentially approve changes if product permits |
+| ACT-I-UPLOADER | Enterprise customer user or attacker able to influence an uploaded document | Place arbitrary instructions and sensitive content in documents; Attempt to influence downstream assistant behavior |
+| ACT-I-COMPROMISED | Compromised or malicious support identity | Attempt cross-tenant retrieval; Request excessive summaries or account changes; Misuse any granted execution authority |
+
+| Invariant | Statement | Assets |
+|---|---|---|
+| INV-I-INSTRUCTION | Uploaded content is always treated as untrusted data and cannot alter governing instructions, select tools, expand authority, or bypass approval. | A-I-DOCS, A-I-ACCOUNTS, A-I-DECISIONS |
+| INV-I-TENANT | Documents, derived data, model context, outputs, and account actions remain bound to the correct tenant and authorized support case. | A-I-DOCS, A-I-ACCOUNTS |
+| INV-I-CHANGE | No account change occurs without explicit permitted action, current authorization, bounded parameters, independent policy validation, and an attributable approval/audit record. | A-I-ACCOUNTS, A-I-DECISIONS |
+| INV-I-DATA | Sensitive content is minimized, protected, purpose-limited, retained/deleted by approved policy, and not exposed to unapproved model providers or training. | A-I-DOCS |
+| INV-I-TRUTH | Summaries and recommendations expose source provenance and uncertainty and are not treated as authoritative account state. | A-I-DECISIONS, A-I-ACCOUNTS |
+
+| Assumption | Statement | Owner | Verification plan |
+|---|---|---|---|
+| AS-I-EXEC | The assistant might receive authority to execute account changes rather than only draft them. | Product and security owner needed | Choose suggestion-only or execution mode; if execution is retained, define the exact allowlisted actions, parameters, approvals, and rollback. |
+| AS-I-MODEL | Model/provider, data-use terms, retention, isolation, and tool architecture are undecided. | AI platform/privacy owner needed | Select architecture/provider and document data flows, contracts, training use, retention, residency, logging, and subprocessors. |
+| AS-I-AUTH | Tenant identity, support-case scope, operator permissions, and approval policy can be established independently of document content. | Identity/support operations owner needed | Define principal-action-resource-context tuple and test tenant/case/action enforcement. |
+
 ## Inputs and inventory
 
 - Assessment date: 2026-10-01. Bundle: `bundle-idea-106a9950-2026-10-01`.
