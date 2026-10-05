@@ -4,6 +4,65 @@
 
 Implement CTRL-T-01 through CTRL-T-03 before release consideration; treat CTRL-T-04 as a provisional medium-priority release requirement pending scale and policy decisions. The detailed, copyable tasks and negative acceptance cases are in [security-controls.md](security-controls.md). All controls are proposed and all checks are `not_run`.
 
+## Scope and system description
+
+- Purpose: Pre-implementation threat model for tenant customer-record CSV export.
+- Source: `ticket.md` (ticket). The system model below is the intended design stated in that source, not observed implementation.
+- Profiles: privacy.
+- In scope: Export request authorization; Asynchronous processing; Export storage and download; Revocation during export; CSV and personal-data handling.
+
+| Excluded area | Reason |
+|---|---|
+| Implementation and deployment verification | No repository or deployment exists. |
+| Active security testing | No target exists and testing was not authorized. |
+
+## System model
+
+Rendered from `model.json`.
+
+| Component | Description | Evidence |
+|---|---|---|
+| C-T-REQUEST | Provisional export request and authorization surface; logical component, architecture undecided | E-T-1 |
+| C-T-WORKER | Conditional asynchronous export processor described as a possibility | E-T-1 |
+| C-T-DATA | Provisional tenant customer-record data source | E-T-1 |
+| C-T-DOWNLOAD | Provisional export artifact storage and download surface | E-T-1 |
+
+| Boundary | Description |
+|---|---|
+| B-T-TENANT | Tenant identity and authorization boundary between an administrator and records/artifacts |
+| B-T-ASYNC | Time and authority boundary between request, later job execution, and later download |
+| B-T-FILE | Boundary between protected records and a portable CSV artifact/client tooling |
+
+| Flow | From | To | Boundaries | Data |
+|---|---|---|---|---|
+| F-T-REQUEST | C-T-REQUEST | C-T-WORKER | B-T-TENANT, B-T-ASYNC | Export request, requester identity, and tenant context |
+| F-T-READ | C-T-DATA | C-T-WORKER | B-T-TENANT, B-T-ASYNC | Tenant customer names, emails, and purchase history |
+| F-T-ARTIFACT | C-T-WORKER | C-T-DOWNLOAD | B-T-ASYNC, B-T-FILE | CSV artifact and access metadata |
+
+| Asset | Description | Owner | Harm |
+|---|---|---|---|
+| A-T-PII | Customer names, email addresses, and purchase history | Data owner needed | Disclosure, privacy injury, fraud enablement, and regulatory or contractual exposure. |
+| A-T-TENANCY | Tenant isolation and administrator authorization | Identity/platform owner needed | Cross-tenant access or use after privilege revocation. |
+| A-T-SERVICE | Export service capacity and trustworthy export results | Engineering owner needed | Resource exhaustion, unavailable service, or unsafe downstream CSV interpretation. |
+
+| Actor | Description | Capabilities |
+|---|---|---|
+| ACT-T-ADMIN | Authenticated tenant administrator | Request permitted tenant exports; Poll and download own export if authorized |
+| ACT-T-REVOKED | Former tenant administrator or attacker with a stale export reference | Retain request identifiers or download links; Attempt access after role revocation |
+| ACT-T-MALICIOUS | Malicious or compromised tenant account | Submit repeated export requests; Influence customer field values within permitted product behavior |
+
+| Invariant | Statement | Assets |
+|---|---|---|
+| INV-T-AUTH | Only a currently authorized administrator may request, cause generation of, poll, or download an export for that same tenant. | A-T-PII, A-T-TENANCY |
+| INV-T-LIFE | Export artifacts remain confidential, expire, are auditable, and are deleted according to an owner-approved retention rule. | A-T-PII |
+| INV-T-SAFE | Export workload is bounded and CSV output cannot trigger formula execution when opened in common spreadsheet software. | A-T-PII, A-T-SERVICE |
+
+| Assumption | Statement | Owner | Verification plan |
+|---|---|---|---|
+| AS-T-ASYNC | The export may use asynchronous processing and a separately retrievable artifact. | Product/architecture owner needed | Decide synchronous versus asynchronous design and document job and artifact lifecycle. |
+| AS-T-ID | A trustworthy current tenant and role signal can be checked at request, execution, and download time. | Identity owner needed | Define identity source, revocation propagation, authorization decision points, and maximum staleness. |
+| AS-T-RETENTION | Retention, deletion, audit, and export-size requirements are not yet defined. | Privacy/product owner needed | Approve data classification, retention TTL, deletion, audit access, and quotas before implementation. |
+
 ## Inputs and inventory
 
 - Assessment date: 2026-10-01. Bundle: `bundle-ticket-0a94f286-2026-10-01`.

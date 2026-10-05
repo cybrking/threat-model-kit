@@ -53,6 +53,7 @@ The bundled schema is draft 0.2. It adds optional non-code `scope.sources`; `sco
 
 Use [assets/assessment-template.md](assets/assessment-template.md). Report these separately:
 
+- An engineering handoff summary, scope and system description, and the system model (components, boundaries, flows, assets, actors, invariants, assumptions) rendered from `model.json` with matching IDs.
 - Input revisions/content digests, inspected scope, inventory completeness, cloud collection time, and visibility gaps.
 - Intended versus observed deployment, including verified/unknown source → artifact → resource mappings.
 - `document_valid`, validator identity/output, `coverage_gaps`, `review_gaps`, and independently reviewed evidence gaps.

@@ -1,5 +1,17 @@
 # Threat model assessment
 
+## Engineering handoff summary
+
+List the highest-priority scenarios and the controls engineering must build first: priority, threat ID, one-sentence finding, evidence kind, and control IDs. State facts consistent with `model.json`; keep priorities provisional when no organizational policy was supplied. Link `security-controls.md`.
+
+## Scope and system description
+
+Record purpose, in-scope areas, exclusions with reasons, and selected profiles, including why the privacy or AI profile is or is not applied. Describe each in-scope system factually: what it does, where it runs when known, and which out-of-scope systems it depends on. Label described, assumed, and inferred statements; for idea or design inputs, describe intended capabilities rather than invented implementation.
+
+## System model
+
+Render components, trust boundaries, flows, assets, actors, invariants, and assumptions from `model.json` with their IDs and evidence or owner references, so reviewers can read the system the threats depend on without opening the JSON. Generate these tables from the model rather than restating them. Explain any empty boundary or flow inventory.
+
 ## Inputs and inventory
 
 Record purpose, assessment date/bundle, input maturity, supplied tickets/features/ideas/designs with locators and revisions/content digests, and any primary/supporting repositories, environment, exclusions, risk policy, and inspected/unavailable/deferred inventory categories. Assign next actions for gaps. Explain any zero boundary/flow inventory.
