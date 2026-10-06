@@ -1,4 +1,4 @@
-# Security controls for engineering
+# Security fix specs for engineering
 
 Input: <ticket/feature/idea/design/repositories and snapshot>
 Maturity: <idea/design/implementation/deployment>
@@ -6,21 +6,27 @@ Priorities: <policy reference or provisional>
 
 ## Work to prioritize
 
-| Priority | Control / threats | What to build | Where enforced | Owner | Status |
+| Priority | Spec / threats | What to build | Where | Owner | Status |
 |---|---|---|---|---|---|
-| <priority> | <control ID / threat IDs> | <concrete requirement> | <logical component or evidenced file/service> | <owner or owner needed> | <proposed/implemented; checks pending/verified> |
+| <priority> | <spec ID / threat IDs> | <short title> | <logical component or evidenced file/service> | <owner or owner needed> | <proposed/implemented; check pending/verified> |
 
-## Copyable implementation tasks
+## Fix specs
 
-### <Control ID>: <short action title>
+One spec per fix. A spec an engineer or agent can run as written, about 90 words. Keep only what is needed to build and verify the fix. Background, residual risk, check procedures, and long dependency notes belong in the assessment and model.json.
 
-- **Requirement:** <specific behavior engineers must implement>
-- **Why:** <attack scenario and harm; threat IDs>
-- **Enforcement point:** <server/tool/worker/storage boundary; conditional if undecided>
-- **Owner and timing:** <role/person or owner needed; before implementation/before release/optional hardening>
-- **Acceptance criteria:** <observable success and abuse/negative cases, not “follow best practices”>
-- **Validation:** <check IDs, planned procedure, and actual results if available; otherwise not run>
-- **Dependencies / decisions:** <assumptions, design choices, and conditions that change the requirement>
-- **Residual risk:** <remaining harm and required owner decision>
+### <Short imperative title> (<spec ID>)
 
-Repeat only for distinct controls; share one requirement across related threats. Keep IDs/statuses consistent with model.json. Early design requirements remain proposed until implementation and validation evidence are available.
+- **Risk:** <one sentence: who can do what to what>
+- **Fix:** <the change, imperative, one or two sentences. Name the behavior, not a technique, unless the technique is the requirement>
+- **Where:** <file, service, or layer. Conditional if undecided>
+- **Done when:** <two to four observable checks, including at least one abuse or negative case. No "follow best practices">
+- **Owner and timing:** <role or owner needed. before implementation / before release / now / optional hardening>
+- **Blocked by:** <only if something truly blocks it. Omit otherwise>
+- **Refs:** <threat IDs, control ID, check ID>
+
+Rules:
+- One risk per spec. If a control covers two, split it or fix the risk sentence.
+- Give a shared requirement one spec and list every threat it closes in Refs.
+- Early design specs stay proposed until implementation and checks provide evidence. Never mark a threat mitigated because a spec exists.
+- Keep specs no more specific about the exploit than an implementer needs. Detail beyond that stays in the assessment.
+- Keep IDs and statuses consistent with model.json.

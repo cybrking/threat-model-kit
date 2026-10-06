@@ -88,7 +88,7 @@ The skill produces three linked artifacts:
 
 | Artifact | Purpose |
 |---|---|
-| `security-controls.md` | Prioritized requirements, enforcement points, owners, and testable acceptance criteria |
+| `security-controls.md` | Prioritized fix specs: risk, fix, where, observable done-when checks, owner, and timing |
 | `assessment.md` | Scope, assumptions, evidence review, visibility gaps, check results, and owner decisions |
 | `model.json` | Versioned, machine-readable assets, trust boundaries, attack scenarios, controls, and checks |
 
